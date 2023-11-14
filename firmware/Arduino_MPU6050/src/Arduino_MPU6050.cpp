@@ -1,3 +1,4 @@
+#include <Arduino.h>
 #include "Wire.h"
 
 const int MPU_ADDR = 0x68;
@@ -25,6 +26,7 @@ void setup() {
   
   Wire.endTransmission(true);
 }
+
 void loop() {
   Wire.beginTransmission(MPU_ADDR);
   Wire.write(ACCEL_XOUT_H); // starting with register 0x3B (ACCEL_XOUT_H)
@@ -32,37 +34,41 @@ void loop() {
   Wire.requestFrom(MPU_ADDR, 7*2, true); // request a total of 7*2=14 registers
   
   // 0x3B (ACCEL_XOUT_H) and 0x3C (ACCEL_XOUT_L)
-  accelerometer_x = Wire.read()<<8 | Wire.read();
+  accelerometer_x = Wire.read() << 8 | Wire.read();
 
   // 0x3D (ACCEL_YOUT_H) and 0x3E (ACCEL_YOUT_L)
-  accelerometer_y = Wire.read()<<8 | Wire.read();
+  accelerometer_y = Wire.read() << 8 | Wire.read();
 
   // 0x3F (ACCEL_ZOUT_H) and 0x40 (ACCEL_ZOUT_L)
-  accelerometer_z = Wire.read()<<8 | Wire.read();
+  accelerometer_z = Wire.read() << 8 | Wire.read();
   
   // 0x41 (TEMP_OUT_H) and 0x42 (TEMP_OUT_L)
-  temperature = Wire.read()<<8 | Wire.read(); 
+  temperature = Wire.read() << 8 | Wire.read(); 
   
   // 0x43 (GYRO_XOUT_H) and 0x44 (GYRO_XOUT_L)
-  gyro_x = Wire.read()<<8 | Wire.read();
+  gyro_x = Wire.read() << 8 | Wire.read();
 
   // 0x45 (GYRO_YOUT_H) and 0x46 (GYRO_YOUT_L)
-  gyro_y = Wire.read()<<8 | Wire.read();
+  gyro_y = Wire.read() << 8 | Wire.read();
 
   // 0x47 (GYRO_ZOUT_H) and 0x48 (GYRO_ZOUT_L)
-  gyro_z = Wire.read()<<8 | Wire.read();
+  gyro_z = Wire.read() << 8 | Wire.read();
   
   Serial.print(convert_int16_to_str(accelerometer_x));
   //Serial.print(",");
+ 
   Serial.print(convert_int16_to_str(accelerometer_y));
   //Serial.print(",");
+  
   Serial.print(convert_int16_to_str(accelerometer_z));
   //Serial.print(",");
   
   Serial.print(convert_int16_to_str(gyro_x));
   //Serial.print(",");
+  
   Serial.print(convert_int16_to_str(gyro_y));
   //Serial.print(",");
+  
   Serial.print(convert_int16_to_str(gyro_z));
   //Serial.print(",");
 
